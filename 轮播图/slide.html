@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-3.1.1.js"></script>
+		<style>
+			body,html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				overflow: hidden;
+			}
+			#slideWrapper {
+				position: relative;
+				width: 100%;
+				height: 400px;
+				background: red;
+				overflow: hidden;
+			}
+			ul ,li {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			#slideWrapper img {
+				width: 980px;
+				height: 100%;
+			}
+			.slideList {
+				height: 100%;
+				overflow: hidden;
+			}
+			.slideItem {
+				float: left;
+				width: 980px;
+				height: 100%;
+			}
+		</style>
+		<script src="js/m.Tween.js"></script>
+		<script src="js/slide.js"></script>
+	</head>
+	<body>
+		<div id="slideWrapper">
+			<ul class="slideList">
+				<li class="slideItem">
+					<img src="img/0.jpg" alt="" />
+				</li>
+			</ul>
+		</div>
+		<script>
+			var imgs = ['img/0.jpg','img/1.jpg','img/2.jpg','img/3.jpg','img/4.jpg']
+			new Slide(imgs, '#slideWrapper')
+		</script>
+	</body>
+</html>
