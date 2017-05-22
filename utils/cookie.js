@@ -1,7 +1,4 @@
-//cookie可以换成其他
-var cookie = (function () {
-	var cookie;
-	return cookie = {
+export default var cookie = {
 		setItem: function (key, value, delay) {
 			var d = new Date();
 			d.setDate(d.getDate() + delay);
@@ -27,4 +24,3 @@ var cookie = (function () {
 			}
 		}
 	}
-})()
