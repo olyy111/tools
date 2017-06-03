@@ -41,11 +41,11 @@ function ajax(options){
 		method: 'GET',
 		url: '',
 		data: {},
-		dataType: 'json'
-		success (){
+		dataType: 'json',
+		success: function (){
 			
 		},
-		error () {
+		error: function () {
 			
 		}
 	}
