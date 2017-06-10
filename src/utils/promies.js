@@ -177,3 +177,68 @@ Promise.race = function(promises){
 window.Promise = Promise;
 
 })(window);
+
+//new promise
+function Promise (fn){
+var ctx = this
+var status = 'pending'
+var fulfills = []
+var rejects = []
+var thens = []
+this.then = function (onFulfilled, onRejected) {
+	return new Promise(function (resolve, reject) {
+		tempFn = this
+		console.log(this)
+		fulfills.push([onFulfilled, resolve, reject, this]) //将then本身返回的promise的resolve存起来
+		rejects.push([onRejected, resolve, reject, this])
+	})
+}
+function resolve (value1) {
+	if(status !== 'pending'){return} //一旦状态变更， 不能在去执行
+	setTimeout(() => {
+		status = 'fulfilled'
+		fulfills.forEach( (fulfill, index) => {
+			try {
+				var rs = fulfill[0](value1)
+				if(rs === fulfill[3]){ //如果then函数的callback返回的promise等于then返回的promise, 抛出错误
+					throw new TypeError('you can\'t return the same promise with the promise which then Function returns in then callback-functions')
+				}
+			}catch(err){
+				console.log(err)
+				fulfill[2](err)
+				return 
+			}
+			
+			if(rs instanceof Promise) {
+				rs.then(function (value2) { //promise2的value
+					fulfill[1](value2) //promise2跟随改变状态
+				})
+			}else {
+				fulfill[1](rs)
+			}
+		})
+	}, 0)
+}
+function reject (reason1) {
+	if(status !== 'pending'){return} //一旦状态变更， 不能在去执行
+	setTimeout(() => {
+		status = 'rejected'
+		rejects.forEach( (reject) => {
+			try { //如果promise失败， 那么传递据因
+				var rs = reject[0](reason1)
+			}catch(err){
+				reject[2](err)
+				return 
+			}
+			if(rs instanceof Promise) { //如果then回调返回promise
+				rs.then(function (value) { //promise2根据then回调函数的返回promise状态决定自己状态
+					reject[1](value)
+				}, function (reason) {
+					reject[2](reason) 
+				})
+			}
+		})
+	}, 0)
+}
+fn.call(ctx, resolve, reject) //改变fn的this指针， 保存promise实例
+}
